@@ -34,3 +34,6 @@ src
 .cache
 
 MUJOCO_LOG.TXT
+
+venv/
+venv_custom_gym/

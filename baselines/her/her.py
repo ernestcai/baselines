@@ -30,6 +30,7 @@ def train(*, policy, rollout_worker, evaluator,
         periodic_policy_path = os.path.join(save_path, 'policy_{}.pkl')
 
     logger.info("Training...")
+    print("Going to train for " + str(n_epochs) + " epochs")
     best_success_rate = -1
 
     if policy.bc_loss == 1: policy.init_demo_buffer(demo_file) #initialize demo buffer if training with demonstrations
