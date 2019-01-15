@@ -21,6 +21,12 @@ class TimeLimit(gym.Wrapper):
         self._elapsed_steps = 0
         return self.env.reset(**kwargs)
 
+    def reset_workspace_params(self, **params):
+        if callable(self.env.reset_workspace_params):
+            return self.env.reset_workspace_params(params)
+        else:
+            raise EnvironmentError("method reset_workspace_params not available in this environment, you need to use customized gym environment.")
+
 class StochasticFrameSkip(gym.Wrapper):
     def __init__(self, env, n, stickprob):
         gym.Wrapper.__init__(self, env)

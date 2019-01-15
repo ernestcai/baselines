@@ -80,3 +80,9 @@ class DummyVecEnv(VecEnv):
             return self.envs[0].render(mode=mode)
         else:
             return super().render(mode=mode)
+
+    def reset_workspace_params(self, **params):
+        if self.num_envs == 1:
+            return self.envs[0].reset_workspace_params(**params)
+        else:
+            raise NotImplementedError("Not available in multiple environment")

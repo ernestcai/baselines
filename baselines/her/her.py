@@ -163,6 +163,9 @@ def learn(*, network, env, total_timesteps,
         rollout_params[name] = params[name]
         eval_params[name] = params[name]
 
+    # reset the environemnt range parameters
+    env.reset_workspace_params(obj_range=params['obj_range'], target_range=params['target_range'])
+
     eval_env = eval_env or env
 
     rollout_worker = RolloutWorker(env, policy, dims, logger, monitor=True, **rollout_params)

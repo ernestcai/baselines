@@ -91,6 +91,9 @@ class Monitor(Wrapper):
     def get_episode_times(self):
         return self.episode_times
 
+    def reset_workspace_params(self, **params):
+        return self.env.reset_workspace_params(**params)
+
 class LoadMonitorResultsError(Exception):
     pass
 
