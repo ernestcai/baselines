@@ -39,11 +39,17 @@ def train(*, policy, rollout_worker, evaluator,
     for epoch in range(n_epochs):
         # train
         rollout_worker.clear_history()
+        c_loss_sum = 0
+        a_loss_sum = 0
         for _ in range(n_cycles):
             episode = rollout_worker.generate_rollouts()
             policy.store_episode(episode)
             for _ in range(n_batches):
-                policy.train()
+                c_loss_tmp, a_loss_tmp = policy.train()
+                c_loss = np.sum(c_loss_tmp)
+                a_loss = np.sum(a_loss_tmp)
+                c_loss_sum += c_loss
+                a_loss_sum += a_loss
             policy.update_target_net()
 
         # test
@@ -57,7 +63,7 @@ def train(*, policy, rollout_worker, evaluator,
             logger.record_tabular(key, mpi_average(val))
         for key, val in rollout_worker.logs('train'):
             logger.record_tabular(key, mpi_average(val))
-        for key, val in policy.logs():
+        for key, val in policy.logs(a_loss=a_loss_sum, c_loss=c_loss_sum):
             logger.record_tabular(key, mpi_average(val))
 
         if rank == 0:

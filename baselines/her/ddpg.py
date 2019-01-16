@@ -403,12 +403,15 @@ class DDPG(object):
         self._sync_optimizers()
         self._init_target_net()
 
-    def logs(self, prefix=''):
+    def logs(self, prefix='', a_loss=None, c_loss=None):
         logs = []
         logs += [('stats_o/mean', np.mean(self.sess.run([self.o_stats.mean])))]
         logs += [('stats_o/std', np.mean(self.sess.run([self.o_stats.std])))]
         logs += [('stats_g/mean', np.mean(self.sess.run([self.g_stats.mean])))]
         logs += [('stats_g/std', np.mean(self.sess.run([self.g_stats.std])))]
+
+        logs += [('actor_loss', a_loss)]
+        logs += [('critic_loss', c_loss)]
 
         if prefix is not '' and not prefix.endswith('/'):
             return [(prefix + '/' + key, val) for key, val in logs]
